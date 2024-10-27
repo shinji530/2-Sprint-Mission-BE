@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:3000", 'https://panda-market-react.netlify.app'],
+  origin: ["http://localhost:3000", 'https://panda-market-react.netlify.app', 'https://2-sprint-mission-fe.vercel.app'],
 };
 
 app.use(cors(corsOptions));
