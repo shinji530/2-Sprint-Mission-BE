@@ -3,43 +3,43 @@ import { IsNotEmpty, IsOptional, IsString, IsNumber, IsArray } from 'class-valid
 export class CreateArticleDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  ownerId: string;
 
   @IsNotEmpty()
   @IsString()
-  description: string;
+  title: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  price: number;
-
-  @IsOptional()
-  @IsArray()
-  tags?: string[];
+  @IsString()
+  content: string;
 
   @IsOptional()
   @IsArray()
   images?: string[];
+
+  @IsOptional()
+  @IsNumber()
+  likeCount?: number;
 }
 
 export class PatchArticleDto {
   @IsOptional()
   @IsString()
-  name?: string;
+  title?: string;
 
   @IsOptional()
   @IsString()
-  description?: string;
-
-  @IsOptional()
-  @IsNumber()
-  price?: number;
-
-  @IsOptional()
-  @IsArray()
-  tags?: string[];
+  content?: string;
 
   @IsOptional()
   @IsArray()
   images?: string[];
+
+  @IsOptional()
+  @IsNumber()
+  likeCount?: number;
+
+  @IsOptional()
+  @IsString()
+  ownerId?: string;
 }

@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Article, Prisma } from '@prisma/client';
 import { ArticleRepository } from '../repositories/article.repository';
+import { CreateArticleDto } from 'src/dto/article.dto';
 
 export type ArticleResponse = {
   totalCount: number;
@@ -16,12 +17,12 @@ export class ArticleService {
     const take = pageSize;
     const sort = orderBy === 'favorite' ? { favoriteCnt: 'desc' } : { createdAt: 'desc' };
 
-    const filter = {
+    const filter = keyword ? {
       OR: [
-        { name: { contains: keyword, mode: 'insensitive' } },
-        { description: { contains: keyword, mode: 'insensitive' } },
+        { title: { contains: keyword } },
+        { content: { contains: keyword } },
       ],
-    };
+    } : undefined;
 
     const articles = await this.articleRepository.get({ skip, take, sort, filter });
     const totalCount = await this.articleRepository.count(filter);
@@ -39,8 +40,15 @@ export class ArticleService {
     return article;
   }
 
-  async create(data: Prisma.ArticleCreateInput): Promise<Article> {
-    return this.articleRepository.save(data);
+  async create(createArticleDto: CreateArticleDto): Promise<Article> {
+    const { ownerId, ...data } = createArticleDto;
+    
+    return this.articleRepository.save({
+      ...data,
+      owner: { 
+        connect: { id: ownerId }
+      }
+    });
   }
 
   async update(id: string, data: Partial<Article>): Promise<Article> {

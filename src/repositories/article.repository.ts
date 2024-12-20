@@ -13,7 +13,7 @@ export class ArticleRepository {
       orderBy: sort,
       where: filter,
       include: {
-        writer: {
+        owner: {
           select: {
             nickname: true,
             image: true,
